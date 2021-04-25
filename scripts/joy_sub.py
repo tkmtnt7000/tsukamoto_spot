@@ -16,11 +16,11 @@ def joy_sub():
     rospy.spin()
 
 def cmd_vel_pub(msg):
-    if msg.buttons[0] = 1:
+    if msg.buttons[0] == 1:
         mode_flag = not mode_flag
     pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
     joy = Twist()
-    if mode_flag = True:
+    if mode_flag == True:
         joy.linear.x = msg.axes[1]
         joy.linear.y = msg.axes[0]
     else:
