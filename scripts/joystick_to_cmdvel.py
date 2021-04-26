@@ -11,23 +11,54 @@ class JoystickToCmdvel:
         self.sub = rospy.Subscriber("joy", Joy, self.callback)
         self.pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
         self.joy = Twist()
-        self.mode_flag = True
+        self.mode_flag = True # True -> linear movement, False -> angular movement
+        self.message = Joy()
+        # initialize
+        self.x = 0.0
+        self.y = 0.0
+        self.yaw = 0.0
         
     def callback(self, msg):
-        rospy.loginfo("publish cmd_vel")
+        rospy.loginfo("subscribe joy")
         self.cmd_vel_pub(msg)
 
+    # change the value of cmd_vel
     def cmd_vel_pub(self, msg):
+        self.x = msg.axes[1]
+        self.y = msg.axes[0]
+        self.yaw = msg.axes[0]
+        
         if msg.buttons[0] == 1:
             self.mode_flag = not self.mode_flag
-        
+        '''
         if self.mode_flag == True:
-            self.joy.linear.x = msg.axes[1]
-            self.joy.linear.y = msg.axes[0]
+            self.joy.linear.x = self.x #msg.axes[1]
+            self.joy.linear.y = self.y #msg.axes[0]
         else:
-            self.joy.angular.z = msg.axes[0]
+            self.joy.angular.z = self.yaw #msg.axes[0]
+            
+        #rospy.loginfo("publish cmd_vel!")
         self.pub.publish(self.joy)
-
-if __name__=='__main__':
+        '''
+    # publish cmd_vel always
+    def send_msg(self):
+        if self.mode_flag == True:
+            self.joy.linear.x = self.x
+            self.joy.linear.y = self.y
+        else:
+            self.joy.angular.z = self.yaw
+        self.pub.publish(self.joy)
+        
+def main():
     joy_cmdvel = JoystickToCmdvel()
-    rospy.spin()
+    #rospy.spin()
+
+    # always publish cmd_vel
+    rate = rospy.Rate(40)
+    while not rospy.is_shutdown():
+        #rospy.loginfo("done")
+        joy_cmdvel.send_msg()
+        rate.sleep()
+        
+if __name__=='__main__':
+    main()
