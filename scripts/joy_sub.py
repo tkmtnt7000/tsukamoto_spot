@@ -4,7 +4,7 @@ import rospy
 from sensor_msgs.msg import Joy
 from geometry_msgs.msg import Twist
 
-mode_flag = True
+#mode_flag = 1
 
 def callback(msg):
     rospy.loginfo("publish cmd_vel!")
@@ -20,7 +20,7 @@ def cmd_vel_pub(msg):
         mode_flag = not mode_flag
     pub = rospy.Publisher('cmd_vel', Twist, queue_size=10)
     joy = Twist()
-    if mode_flag == True:
+    if mode_flag == 1:
         joy.linear.x = msg.axes[1]
         joy.linear.y = msg.axes[0]
     else:
@@ -28,4 +28,5 @@ def cmd_vel_pub(msg):
     pub.publish(joy)
 
 if __name__ =='__main__':
+    mode_flag = 1
     joy_sub()
