@@ -13,11 +13,11 @@ class JoystickToCmdvel:
         self.joy = Twist()
         self.mode_flag = True
         
-    def callback(msg):
+    def callback(self, msg):
         rospy.loginfo("publish cmd_vel")
-        cmd_vel_pub(msg)
+        self.cmd_vel_pub(msg)
 
-    def cmd_vel_pub(msg):
+    def cmd_vel_pub(self, msg):
         if msg.buttons[0] == 1:
             self.mode_flag = not self.mode_flag
         
@@ -26,7 +26,7 @@ class JoystickToCmdvel:
             self.joy.linear.y = msg.axes[0]
         else:
             self.joy.angular.z = msg.axes[0]
-        self.pub.publish(joy)
+        self.pub.publish(self.joy)
 
 if __name__=='__main__':
     joy_cmdvel = JoystickToCmdvel()
