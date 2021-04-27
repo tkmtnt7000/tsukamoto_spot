@@ -1,0 +1,19 @@
+4/27 Spot体内における環境構築
+rosdep install の前にrosdep updateが必要かも
+Prease run: rosdep updateの表示が出た
+
+ユーザー作って入った直後だと一度もrosdep updateされていないため
+
+pip3 install -r requirements.txt
+はjsk_spot_robotの中にいないとできなかった
+cannot find requirements.txtが出る
+
+catkin build -j4 -p10
+Spot上にあるPCは4コアしかないのでオプションをつける
+
+jsk_spot_startup/auth/spot_credential.yaml
+usernameとpasswordを設定
+
+rosbag launchファイルのファイル名
+
+rvizが立ち上がらない
