@@ -24,11 +24,13 @@ class JoystickToCmdvel:
 
     # change the value of cmd_vel
     def cmd_vel_pub(self, msg):
-        self.x = msg.axes[1]
-        self.y = msg.axes[0]
-        self.yaw = msg.axes[0]
+        # joy takes -1.0 to 1.0 value
+        # cmd_vel -0.5 to 0.5
+        self.x = msg.axes[1] / 2
+        self.y = msg.axes[0] / 2
+        self.yaw = msg.axes[0] / 2
         
-        if msg.buttons[0] == 1:
+        if msg.buttons[7] == 1:
             self.mode_flag = not self.mode_flag
         '''
         if self.mode_flag == True:
