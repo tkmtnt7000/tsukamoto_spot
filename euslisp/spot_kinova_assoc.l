@@ -2,6 +2,7 @@
 
 (load "spot.l")
 (load "gen3_lite_gen3_lite_2f.l")
+(load "vending_machine_model.l")
 
 (defun spot-kinova ()
   ;;(gen3_lite_gen3_lite_2f)
