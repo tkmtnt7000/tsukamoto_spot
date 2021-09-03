@@ -56,18 +56,23 @@
 
 (defun set-name ()
   (let ((message (elt (send (one-shot-subscribe "/speech_to_text_jp" speech_recognition_msgs::SpeechRecognitionCandidates) :transcript) 0)))
-  (print message)
-  (cond ((substringp "新城" message) "shinjo")
-        ((substringp "北川" message) "kitagawa")
-        ((substringp "石田" message) "ishida")
-        ((substringp "塚本" message) "tsukamoto")
-        (t nil)
-        )))
-;;(send *ri* navigate-to -1) ;; go back to dock
-;; go back to 73B2
-;;(send *ri* :navigate-to 0)
-
-;;(send *ri* :sit)
+  (ros::ros-info "~A" message)
+  (cond
+   ((substringp "北川" message) "kitagawa")
+   ((substringp "新城" message) "shinjo")
+   ((substringp "金沢" message) "kanazawa")
+   ((substringp "若林" message) "wakabayashi")
+   ((substringp "種本" message) "tanemoto")
+   ((substringp "ギガ" message) "guiga")
+   ((substringp "石田" message) "ishida")
+   ((substringp "平岡" message) "hiraoka")
+   ((substringp "おびなた" message) "obinata")
+   ((substringp "市倉" message) "ichikura")
+   ((substringp "塚本" message) "tsukamoto")
+   ((substringp "PR" message) "pr2")
+   ((substringp "3Dプリンター" message) "3dprinter")
+   (t nil)
+   )))
 
 ;; set-desk-position
 (defvar *desk-position* (make-hash-table :test #'equal))
