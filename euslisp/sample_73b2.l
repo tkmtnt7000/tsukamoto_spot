@@ -5,9 +5,9 @@
 ;; By default, it is assumed that Spot is at the entrance of 73B2 and headed to the AR marker on the door.
 ;;
 (ros::roseus-add-msgs "speech_recognition_msgs")
-(load "package://spotkinovaeus/spotkinova-interface.l")
+(load "package://spoteus/spot-interface.l")
 (unless (boundp '*ri*)
-  (spotkinova-init)) ;; do not create-viewer
+  (spot-init)) ;; do not create-viewer
 
 (defun look-at-desk ()
   (setq coord (make-cascoords :pos #f(800 0 500) :rpy (float-vector 0 (/ pi 4) 0)))
@@ -87,15 +87,15 @@
   (gethash (intern key) *desk-position*))
 
 (defun make-hash-desk-position ()
-  (add-entry-desk-position "hrp2" (list 3 0 0 0 "hrpツー"))
+  (add-entry-desk-position "hrp2" (list 3 0 0 0 "hrpつー"))
   (add-entry-desk-position "hiraoka" (list 4 0 -0.2 0 "平岡"))
   (add-entry-desk-position "obinata" (list 4 0 0 0 "おびなた"))
   (add-entry-desk-position "ishida" (list 5 0 0 90 "石田"))
   (add-entry-desk-position "tsukamoto" (list 6 0 0 0 "塚本"))
-  (add-entry-desk-position "PR2" (list 10 0 0 0 "prツー"))
+  (add-entry-desk-position "PR2" (list 10 0 0 0 "prつー"))
   (add-entry-desk-position "ichikura" (list 11 0 0 0 "いちくら"))
-  (add-entry-desk-position "kitagawa" (list 13 0 0 0 "北川")
-  (add-entry-desk-position "3dprinter" (list 12 0 0.2 0 "スリーdプリンター"))
+  (add-entry-desk-position "kitagawa" (list 13 0 0 0 "北川"))
+  (add-entry-desk-position "3dprinter" (list 12 0 0.2 0 "すりーdぷりんたー"))
   (add-entry-desk-position "shinjo" (list 16 0 0 0 "新城"))
   (add-entry-desk-position "kanazawa" (list 16 0.2 0 0 "金沢"))
   (add-entry-desk-position "wakabayashi" (list 17 0 -0.2 0 "若林"))
@@ -104,13 +104,14 @@
   )
 
 (defun main ()
+  (autowalk-data-upload)
   (make-hash-desk-position)
   ;;(send *ri* :go-pos 1.0 1.2 0)
   (send *ri* :speak-jp "宅配便ですか" :wait t)
   (send *ri* :speak-jp "どこに届けますか" :wait t)
   (unix::sleep 1)
   (go-to-desk)
-  
+
   (send *ri* :speak-jp "お届け物です" :wait t)
   (send *ri* :speak-jp "受け取ったら受け取りましたと言ってください" :wait t)
   (while (not (string= "受け取りました" (elt (send (one-shot-subscribe "/speech_to_text_jp" speech_recognition_msgs::SpeechRecognitionCandidates) :transcript) 0))))
