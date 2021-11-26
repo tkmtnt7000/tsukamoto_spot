@@ -86,13 +86,15 @@
   ;; (send *ri* :angle-vector (send *fetch* :angle-vector) 5000)
   (send *ri* :wait-interpolation)
 
-  ;; opening door
+  ;; opening door with interpolation
   (send *fetch* :rarm :inverse-kinematics
         (send (send *fetch* :copy-worldcoords) :transform
               (make-coords :pos #f(700 70 950) :rpy (float-vector 0 0 -pi/2))))
   (send *ri* :angle-vector (send *fetch* :angle-vector) 5000)
   (send *ri* :wait-interpolation)
 
+  ;; 73b2 door's radius is 700 mm
+  ;; distance between Fetch and 73b2 door is 800 mm
   (send *fetch* :rarm :inverse-kinematics
         (send (send *fetch* :copy-worldcoords) :transform
               (make-coords
